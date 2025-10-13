@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* -*- color-scheme: light; -*- */
 :root {
   --primary: #1141af;
 }
