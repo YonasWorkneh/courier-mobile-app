@@ -1,9 +1,11 @@
-import { Ionicons } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Tabs, useRouter } from "expo-router";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 
 export default function TabLayout() {
+  const router = useRouter();
+
   return (
     <View style={{ flex: 1 }}>
       <Tabs
@@ -40,16 +42,44 @@ export default function TabLayout() {
           options={{
             title: "Track",
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="location" size={size} color={color} />
+              <MaterialIcons name="gps-fixed" size={24} color={color} />
             ),
           }}
         />
+
+        {/* Placeholder for center floating button */}
+        <Tabs.Screen
+          name="placeholder"
+          options={{
+            title: "Order",
+            tabBarButton: () => <View />,
+          }}
+          listeners={{
+            tabPress: (e) => {
+              e.preventDefault();
+            },
+          }}
+        />
+
         <Tabs.Screen
           name="order"
           options={{
             title: "Order",
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="list" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="orders"
+          options={{
+            title: "Orders",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons
+                name="document-text-outline"
+                size={size}
+                color={color}
+              />
             ),
           }}
         />
@@ -66,6 +96,7 @@ export default function TabLayout() {
 
       {/* Floating Action Button */}
       <TouchableOpacity
+        onPress={() => router.push("/place-order")}
         style={{
           position: "absolute",
           bottom: 40,
@@ -84,7 +115,7 @@ export default function TabLayout() {
           shadowRadius: 3.84,
         }}
       >
-        <Ionicons name="add" size={32} color="white" />
+        <Ionicons name="archive-outline" size={28} color="white" />
       </TouchableOpacity>
     </View>
   );

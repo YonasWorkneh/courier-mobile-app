@@ -1,10 +1,9 @@
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
-  Platform,
   ScrollView,
   StatusBar,
   Text,
@@ -17,40 +16,38 @@ export default function HomeScreen() {
 
   const handleSignUp = () => {
     // Navigate to register screen
-    router.push("/(auth)/signup");
+    router.push("/signup");
   };
   return (
     <SafeAreaView className="bg-[#1141AF]">
-      <StatusBar
-        barStyle={Platform.OS === "android" ? "light-content" : "light-content"}
-      />
+      <StatusBar barStyle="light-content" />
 
       {/* Header with Blue Background */}
-      <View className="bg-[#1141AF] px-6 pt-4 pb-8 mb-10">
+      <View className="bg-[#1141AF] px-6 pt-4 pb-8 mb-5">
         <View className="flex-row items-center justify-between">
           <View className="flex-1">
             <Text className="text-white text-3xl font-bold">Welcome</Text>
             <Text className="text-white/80 text-base mt-1">
               Sign Up to unlock full features.
             </Text>
-            <TouchableOpacity
-              className="bg-white rounded-xl py-2 px-4 mt-3 w-24"
-              onPress={handleSignUp}
-            >
-              <Text className="text-[#1141AF] font-semibold text-sm text-center">
-                Sign Up
-              </Text>
-            </TouchableOpacity>
           </View>
           <View className="flex-row items-center space-x-4">
             <TouchableOpacity className="p-2">
-              <Ionicons name="notifications-outline" size={24} color="white" />
+              <Ionicons name="notifications-outline" size={20} color="white" />
             </TouchableOpacity>
             <TouchableOpacity className="p-2">
-              <Ionicons name="person-outline" size={24} color="white" />
+              <Ionicons name="person-outline" size={20} color="white" />
             </TouchableOpacity>
           </View>
         </View>
+        <TouchableOpacity
+          className="bg-white rounded-xl py-3 !w-[100px] mt-4"
+          onPress={() => router.push("/signup")}
+        >
+          <Text className="text-[#1141AF] font-semibold text-center">
+            Sign Up
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView
@@ -62,9 +59,12 @@ export default function HomeScreen() {
           <View className="bg-[#1141AF] rounded-2xl p-6 flex-row items-center justify-between">
             <View className="flex-1">
               <Text className="text-white text-2xl font-bold mb-4">
-                Order more you get more points
+                Got another parcel? We’ve got you covered!
               </Text>
-              <TouchableOpacity className="bg-white rounded-xl py-3 px-2 !w-[120px]">
+              <TouchableOpacity
+                className="bg-white rounded-xl py-3 px-2 !w-[100px]"
+                onPress={() => router.push("/place-order")}
+              >
                 <Text className="text-[#1141AF] font-semibold text-center">
                   Order Now
                 </Text>
@@ -84,15 +84,25 @@ export default function HomeScreen() {
         {/* Quick Action Buttons */}
         <View className="mx-6 mt-6">
           <View className="flex flex-row justify-between">
-            <TouchableOpacity className="border border-gray-200 rounded-2xl p-3 py-3 mr-2 h-[100px] flex-1 items-center">
-              <View className="size-12 bg-red-100 rounded-full items-center justify-center mb-3">
-                <Ionicons name="heart" size={24} color="#EF4444" />
+            <TouchableOpacity
+              className="border border-gray-200 rounded-2xl p-3 py-3 mr-2 h-[100px] flex-1 items-center"
+              onPress={() => router.push("/(saved)/saved")}
+            >
+              <View className="size-12 bg-blue-100 rounded-full items-center justify-center mb-3">
+                <FontAwesome5
+                  name="cart-arrow-down"
+                  size={24}
+                  color="#1141AF"
+                />
               </View>
               <Text className="text-gray-800 font-semibold text-center text-sm w-[100px]">
-                Save Orders
+                Saved Orders
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity className="border border-gray-200 rounded-2xl p-3 py-3 mr-2 h-[100px] flex-1 items-center">
+            <TouchableOpacity
+              className="border border-gray-200 rounded-2xl p-3 py-3 mr-2 h-[100px] flex-1 items-center"
+              onPress={() => router.push("/track")}
+            >
               <View className="size-12 bg-blue-100 rounded-full items-center justify-center mb-3">
                 <Ionicons name="location" size={24} color="#1141AF" />
               </View>
@@ -100,9 +110,12 @@ export default function HomeScreen() {
                 Track Parcel
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity className="border border-gray-200 rounded-2xl p-3 py-3 mr-2 h-[100px] flex-1 items-center">
-              <View className="size-12 bg-green-100 rounded-full items-center justify-center mb-3">
-                <Ionicons name="list" size={24} color="#10B981" />
+            <TouchableOpacity
+              className="border border-gray-200 rounded-2xl p-3 py-3 mr-2 h-[100px] flex-1 items-center"
+              onPress={() => router.push("/orders")}
+            >
+              <View className="size-12 bg-blue-100 rounded-full items-center justify-center mb-3">
+                <FontAwesome5 name="box-open" size={24} color="#1141AF" />
               </View>
               <Text className="text-gray-800 font-semibold text-center text-sm w-[100px]">
                 My Orders

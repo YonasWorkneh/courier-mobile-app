@@ -49,7 +49,7 @@ export default function WelcomeScreen({ onServiceSelect }: WelcomeScreenProps) {
           activeOpacity={0.8}
         >
           <ImageBackground
-            source={require("../assets/images/delivery-man.jpg")}
+            source={require("../assets/images/delivery-man.png")}
             className="w-full h-60 rounded-2xl overflow-hidden"
             resizeMode="contain" // "cover" ensures it fills the container
           >

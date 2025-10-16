@@ -21,7 +21,7 @@ export default function CourierOnboarding({
       title: "Fast & Reliable Delivery",
       description:
         "Choose local, regional, or international delivery with just a few taps.",
-      image: require("../assets/images/mobile-truck.jpg"),
+      image: require("../assets/images/bg.png"),
       imageStyle: { width: 350, height: 400 },
     },
     {

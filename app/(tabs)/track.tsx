@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -94,7 +95,10 @@ export default function TrackTab() {
 
       {/* Ongoing Order Card */}
       <View className="px-6 mb-6">
-        <TouchableOpacity className="bg-white border border-blue-200 rounded-2xl p-4">
+        <TouchableOpacity
+          className="bg-white border border-blue-200 rounded-2xl p-4"
+          onPress={() => router.push("/order-detail")}
+        >
           <View className="flex-row items-center">
             <View className="w-10 h-10 bg-blue-100 rounded-full items-center justify-center mr-4">
               <Ionicons name="time-outline" size={20} color="#1141AF" />

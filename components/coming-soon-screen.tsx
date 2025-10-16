@@ -15,7 +15,12 @@ export default function ComingSoonScreen({ onBack }: ComingSoonScreenProps) {
       {/* Main Content */}
       <View className="flex-1 items-center justify-center px-8">
         {/* Clock Icon */}
-        <FontAwesome5 name="clock" size={48} color="blue" className="mb-20 text-blue-600" />
+        <FontAwesome5
+          name="clock"
+          size={48}
+          color="#1141af"
+          className="mb-20"
+        />
         {/* Title */}
         <Text className="text-3xl font-bold text-black text-center mb-4">
           Coming Soon!
@@ -32,7 +37,7 @@ export default function ComingSoonScreen({ onBack }: ComingSoonScreenProps) {
       <View className="px-8 pb-8">
         <TouchableOpacity
           onPress={onBack}
-          className="w-full bg-blue-600 rounded-xl py-4"
+          className="w-full bg-[#1141af] rounded-xl py-4"
         >
           <Text className="text-white font-bold text-lg text-center">Back</Text>
         </TouchableOpacity>

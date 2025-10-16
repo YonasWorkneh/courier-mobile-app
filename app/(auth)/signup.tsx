@@ -40,7 +40,7 @@ export default function RegisterScreen({
         {/* Background Image */}
         <View className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
           <Image
-            source={require("@/assets/images/mobile-truckk.png")}
+            source={require("@/assets/images/bg.png")}
             style={{
               width: 300,
               height: 230,
