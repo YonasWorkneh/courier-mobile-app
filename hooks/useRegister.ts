@@ -20,9 +20,6 @@ export const useRegister = () => {
       // Update query cache
       queryClient.setQueryData(["auth", "user"], data.data);
     },
-    onError: (error) => {
-      console.error("Registration failed:", error);
-    },
   });
 
   const register = (userData: RegisterData) => {

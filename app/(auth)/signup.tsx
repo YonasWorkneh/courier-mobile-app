@@ -16,6 +16,20 @@ import {
 import Toast from "react-native-toast-message";
 import { useRegister } from "../../hooks/useAuth";
 
+// East African countries with their flags and dial codes
+const countries = [
+  { code: "ET", name: "Ethiopia", dialCode: "+251", flag: "🇪🇹" },
+  { code: "KE", name: "Kenya", dialCode: "+254", flag: "🇰🇪" },
+  { code: "UG", name: "Uganda", dialCode: "+256", flag: "🇺🇬" },
+  { code: "TZ", name: "Tanzania", dialCode: "+255", flag: "🇹🇿" },
+  { code: "RW", name: "Rwanda", dialCode: "+250", flag: "🇷🇼" },
+  { code: "BI", name: "Burundi", dialCode: "+257", flag: "🇧🇮" },
+  { code: "SS", name: "South Sudan", dialCode: "+211", flag: "🇸🇸" },
+  { code: "SO", name: "Somalia", dialCode: "+252", flag: "🇸🇴" },
+  { code: "DJ", name: "Djibouti", dialCode: "+253", flag: "🇩🇯" },
+  { code: "ER", name: "Eritrea", dialCode: "+291", flag: "🇪🇷" },
+];
+
 export default function RegisterScreen() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,6 +38,13 @@ export default function RegisterScreen() {
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState({
+    code: "ET",
+    name: "Ethiopia",
+    dialCode: "+251",
+    flag: "🇪🇹",
+  });
+  const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [errors, setErrors] = useState<{
     fullName?: string;
     email?: string;
@@ -35,10 +56,12 @@ export default function RegisterScreen() {
 
   const { register, isLoading, error, isSuccess } = useRegister();
   const { roles, isLoadingRoles } = useRoles();
+  console.log("roles", roles);
 
   const customerRole = roles?.find(
     (role: Role) => role.name.toLowerCase() === "customer"
   );
+  console.log(customerRole);
 
   const validateForm = () => {
     const newErrors: {
@@ -89,14 +112,14 @@ export default function RegisterScreen() {
     }
 
     // Use dynamic customer role ID or fallback to hardcoded ID
-    const roleId = customerRole?.id || "cmgiy2kx80003kf3xnox8bd3u";
+    const roleId = customerRole?.id ?? "cmgzw1bdm0000f73oogrss9bh";
 
     register({
       name: fullName.trim(),
       email: email.trim(),
       role: roleId,
       password,
-      phone: phone.trim(),
+      phone: `${selectedCountry.dialCode}${phone.trim()}`,
     });
   };
 
@@ -114,10 +137,14 @@ export default function RegisterScreen() {
 
   useEffect(() => {
     if (error) {
+      // Extract the actual error message from the backend response
+      const errorMessage =
+        error.message || "Something went wrong. Please try again.";
+
       Toast.show({
         type: "error",
         text1: "Registration Failed",
-        text2: error.message || "Something went wrong. Please try again.",
+        text2: errorMessage,
       });
     }
   }, [error]);
@@ -297,7 +324,7 @@ export default function RegisterScreen() {
           </View>
 
           {/* Phone Input */}
-          <View className="mb-6">
+          <View className="mb-6 relative">
             <Text className="text-black font-semibold text-base mb-2">
               Phone Number
             </Text>
@@ -315,6 +342,28 @@ export default function RegisterScreen() {
                 size={20}
                 color={errors.phone ? "#EF4444" : "#9CA3AF"}
               />
+
+              {/* Country Code Selector */}
+              <TouchableOpacity
+                onPress={() => setShowCountryPicker(!showCountryPicker)}
+                className="flex-row items-center mr-3"
+              >
+                <Text className="text-gray-900 text-base mr-1">
+                  {selectedCountry.flag}
+                </Text>
+                <Text className="text-gray-900 text-base mr-1">
+                  {selectedCountry.dialCode}
+                </Text>
+                <Ionicons
+                  name={showCountryPicker ? "chevron-up" : "chevron-down"}
+                  size={16}
+                  color="#9CA3AF"
+                />
+              </TouchableOpacity>
+
+              {/* Divider */}
+              <View className="w-px h-6 bg-gray-300 mr-3" />
+
               <TextInput
                 placeholder="Enter Phone Number"
                 placeholderTextColor="#9CA3AF"
@@ -328,9 +377,46 @@ export default function RegisterScreen() {
                 onFocus={() => setFocusedInput("phone")}
                 onBlur={() => setFocusedInput(null)}
                 keyboardType="phone-pad"
-                className="flex-1 ml-3 text-gray-900"
+                className="flex-1 text-gray-900"
               />
             </View>
+            {/* Country Dropdown */}
+            {showCountryPicker && (
+              <View className="bg-white border border-gray-200 rounded-xl mb-2 shadow-sm max-h-48 w-1/2 absolute top-[75px] left-0 z-10">
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  className="max-h-48"
+                >
+                  {countries.map((country) => (
+                    <TouchableOpacity
+                      key={country.code}
+                      onPress={() => {
+                        setSelectedCountry(country);
+                        setShowCountryPicker(false);
+                      }}
+                      className={`flex-row items-center p-3 ${
+                        selectedCountry.code === country.code
+                          ? "bg-blue-50"
+                          : ""
+                      }`}
+                    >
+                      <Text className="text-xl mr-3">{country.flag}</Text>
+                      <View className="flex-1">
+                        <Text className="text-gray-900 font-medium">
+                          {country.name}
+                        </Text>
+                        <Text className="text-gray-500 text-sm">
+                          {country.dialCode}
+                        </Text>
+                      </View>
+                      {selectedCountry.code === country.code && (
+                        <Ionicons name="checkmark" size={20} color="#1141AF" />
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
             {errors.phone && (
               <Text className="text-red-500 text-sm mt-1 ml-1">
                 {errors.phone}

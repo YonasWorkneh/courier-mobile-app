@@ -35,7 +35,7 @@ export const useLogout = () => {
       queryClient.invalidateQueries({ queryKey: ["auth", "refreshToken"] });
     },
     onError: (error) => {
-      console.error("Logout failed:", error);
+      // console.error("Logout failed:", error);
     },
   });
 

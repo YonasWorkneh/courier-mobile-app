@@ -46,6 +46,8 @@ export default function SignInScreen() {
       return;
     }
 
+    // Clear any existing errors before attempting login
+    setErrors({});
     login({ email: email.trim(), password });
   };
 
@@ -63,13 +65,40 @@ export default function SignInScreen() {
 
   useEffect(() => {
     if (error) {
+      const errorMessage =
+        error.message || "Invalid credentials. Please try again.";
+
+      // Set field-specific errors if available
+      if (error.message) {
+        if (error.message.toLowerCase().includes("email")) {
+          setErrors({ email: error.message });
+        } else if (error.message.toLowerCase().includes("password")) {
+          setErrors({ password: error.message });
+        } else {
+          setErrors({ email: error.message });
+        }
+      }
+
       Toast.show({
         type: "error",
         text1: "Login Failed",
-        text2: error.message || "Invalid credentials. Please try again.",
+        text2: errorMessage,
       });
     }
   }, [error]);
+
+  // Clear errors when user starts typing
+  useEffect(() => {
+    if (email && errors.email) {
+      setErrors((prev) => ({ ...prev, email: undefined }));
+    }
+  }, [email, errors.email]);
+
+  useEffect(() => {
+    if (password && errors.password) {
+      setErrors((prev) => ({ ...prev, password: undefined }));
+    }
+  }, [password, errors.password]);
 
   return (
     <View className="flex-1 bg-[#1141AF] pt-10">
