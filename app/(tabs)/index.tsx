@@ -1,4 +1,4 @@
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
@@ -11,12 +11,29 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "../../hooks/useAuth";
+
 export default function HomeScreen() {
   const router = useRouter();
+  const { user, isAuthenticated } = useAuth();
 
   const handleSignUp = () => {
     // Navigate to register screen
-    router.push("/signup");
+    router.push("/(auth)/signup");
+  };
+
+  const handleProfileNavigation = () => {
+    router.push("/(tabs)/profile");
+  };
+
+  // Function to get user initials
+  const getUserInitials = () => {
+    if (!user?.name) return "U";
+    return user.name
+      .split(" ")
+      .map((name: string) => name.charAt(0).toUpperCase())
+      .slice(0, 2)
+      .join("");
   };
   return (
     <SafeAreaView className="bg-[#1141AF]">
@@ -26,28 +43,52 @@ export default function HomeScreen() {
       <View className="bg-[#1141AF] px-6 pt-4 pb-8 mb-5">
         <View className="flex-row items-center justify-between">
           <View className="flex-1">
-            <Text className="text-white text-3xl font-bold">Welcome</Text>
+            <Text className="text-white text-3xl font-bold">
+              {isAuthenticated ? `Welcome, ${user?.name || "User"}` : "Welcome"}
+            </Text>
             <Text className="text-white/80 text-base mt-1">
-              Sign Up to unlock full features.
+              {isAuthenticated
+                ? "Ready to send your next parcel?"
+                : "Sign Up to unlock full features."}
             </Text>
           </View>
           <View className="flex-row items-center space-x-4">
             <TouchableOpacity className="p-2">
-              <Ionicons name="notifications-outline" size={20} color="white" />
+              <FontAwesome name="language" size={24} color="white" />
+              {/* <MaterialIcons name="language" size={24} color="white" /> */}
+              {/* <FontAwesome name="globe" size={24} color="white" /> */}
             </TouchableOpacity>
             <TouchableOpacity className="p-2">
-              <Ionicons name="person-outline" size={20} color="white" />
+              <Ionicons name="notifications-outline" size={20} color="white" />
             </TouchableOpacity>
+            {isAuthenticated ? (
+              <TouchableOpacity
+                className="p-2"
+                onPress={handleProfileNavigation}
+              >
+                <View className="w-8 h-8 bg-white rounded-full items-center justify-center">
+                  <Text className="text-[#1141AF] font-bold text-sm">
+                    {getUserInitials()}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity className="p-2">
+                <Ionicons name="person-outline" size={20} color="white" />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
-        <TouchableOpacity
-          className="bg-white rounded-xl py-3 !w-[100px] mt-4"
-          onPress={() => router.push("/signup")}
-        >
-          <Text className="text-[#1141AF] font-semibold text-center">
-            Sign Up
-          </Text>
-        </TouchableOpacity>
+        {!isAuthenticated && (
+          <TouchableOpacity
+            className="bg-white rounded-xl py-3 !w-[100px] mt-4"
+            onPress={handleSignUp}
+          >
+            <Text className="text-[#1141AF] font-semibold text-center">
+              Sign Up
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <ScrollView
@@ -89,11 +130,8 @@ export default function HomeScreen() {
               onPress={() => router.push("/(saved)/saved")}
             >
               <View className="size-12 bg-blue-100 rounded-full items-center justify-center mb-3">
-                <FontAwesome5
-                  name="cart-arrow-down"
-                  size={24}
-                  color="#1141AF"
-                />
+                <FontAwesome6 name="check-circle" size={15} color="#1141AF" />
+                <FontAwesome6 name="box-open" size={20} color="#1141AF" />
               </View>
               <Text className="text-gray-800 font-semibold text-center text-sm w-[100px]">
                 Saved Orders

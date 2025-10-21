@@ -1,4 +1,4 @@
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
@@ -60,11 +60,15 @@ export default function SavedScreen() {
   ];
 
   const renderOrderItem = ({ item }: { item: SavedOrder }) => (
-    <TouchableOpacity className="bg-white rounded-2xl p-4 mb-3 border border-gray-200">
+    <TouchableOpacity
+      className="bg-white rounded-2xl p-4 mb-3 border border-gray-200"
+      onPress={() => router.push("/order-detail")}
+    >
       <View className="flex-row items-center">
         {/* Heart Icon */}
-        <View className="mr-4">
-          <FontAwesome5 name="cart-arrow-down" size={24} color="#1141AF" />
+        <View className="size-12 bg-blue-100 rounded-full items-center justify-center mb-3 mr-3">
+          <FontAwesome6 name="check-circle" size={15} color="#1141AF" />
+          <FontAwesome6 name="box-open" size={20} color="#1141AF" />
         </View>
 
         {/* Order Details */}

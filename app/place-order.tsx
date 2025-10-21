@@ -161,11 +161,19 @@ export default function AddOrderScreen() {
     {
       id: "Fashion items",
       specialIcon: (
-        <MaterialCommunityIcons
-          name="toolbox"
-          size={24}
-          color={formData.categories?.includes("Other") ? "#fff" : "#1141AF"}
-        />
+        <View className="relative rounded-full items-center justify-center text-[#1141AF]">
+          <MaterialCommunityIcons
+            name="redhat"
+            size={24}
+            color={`${formData.categories?.includes("Fashion items") ? "#fff" : "#1141AF"}`}
+          />
+          <MaterialCommunityIcons
+            name="sunglasses"
+            size={15}
+            color={`${formData.categories?.includes("Fashion items") ? "#fff" : "#1141AF"}`}
+            className="absolute -bottom-2 -right-0"
+          />
+        </View>
       ),
       selected: false,
     },
@@ -564,7 +572,7 @@ export default function AddOrderScreen() {
             onPress={() =>
               setFormData((prev) => ({ ...prev, shipmentType: "Parcel" }))
             }
-            className={`flex-row gap-2 border rounded-xl p-4 py-6 items-center justify-center ${
+            className={`flex-row gap-2 border rounded-xl p-4 !py-0 items-center justify-center ${
               formData.shipmentType === "Parcel"
                 ? "border-[#1141AF] bg-blue-50"
                 : "border-gray-200 bg-white"
@@ -629,7 +637,7 @@ export default function AddOrderScreen() {
               className={`border border-gray-200 rounded-full px-3 py-2 flex-row items-center ${
                 formData.categories?.includes(category.id)
                   ? "bg-[#1141AF] "
-                  : "bg-white"
+                  : "bg-white !border-[#1141AF]"
               }`}
             >
               <View
@@ -665,7 +673,7 @@ export default function AddOrderScreen() {
             className={`border border-gray-200 rounded-full px-6 py-2 flex-row items-center ${
               formData.categories?.includes("Other")
                 ? "bg-[#1141AF] "
-                : "bg-white"
+                : "bg-white !border-[#1141AF]"
             }`}
           >
             <Text
@@ -735,7 +743,7 @@ export default function AddOrderScreen() {
               "Height",
               "height",
               "Height",
-              <AntDesign name="column-height" size={24} color="black" />,
+              <AntDesign name="column-height" size={24} color="#1141AF" />,
               "numeric"
             )}
           </>
@@ -951,66 +959,64 @@ export default function AddOrderScreen() {
       </View>
 
       {/* Order Details */}
-      <View className="space-y-3">
+      <View className="flex gap-2">
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Created on</Text>
-          <Text className="text-gray-900 text-xs font-medium">
-            Oct 2, 2:15 PM
-          </Text>
+          <Text className="text-gray-600">Created on</Text>
+          <Text className="text-gray-900 font-medium">Oct 2, 2:15 PM</Text>
         </View>
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Service Type</Text>
-          <Text className="text-gray-900 text-xs font-medium">
+          <Text className="text-gray-600">Service Type</Text>
+          <Text className="text-gray-900 font-medium">
             {formData.serviceType}
           </Text>
         </View>
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Courier Collection Type</Text>
-          <Text className="text-gray-900 text-xs font-medium">
+          <Text className="text-gray-600">Courier Collection Type</Text>
+          <Text className="text-gray-900 font-medium">
             {formData.collectionType}
           </Text>
         </View>
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Sender Entry</Text>
-          <Text className="text-gray-900 text-xs font-medium">
+          <Text className="text-gray-600">Sender Entry</Text>
+          <Text className="text-gray-900 font-medium">
             {formData.senderEntry}
           </Text>
         </View>
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Shipment Type</Text>
-          <Text className="text-gray-900 text-xs font-medium">
+          <Text className="text-gray-600">Shipment Type</Text>
+          <Text className="text-gray-900 font-medium">
             {formData.shipmentType}
           </Text>
         </View>
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Destination</Text>
-          <Text className="text-gray-900 text-xs font-medium">
+          <Text className="text-gray-600">Destination</Text>
+          <Text className="text-gray-900 font-medium">
             {formData.destination}
           </Text>
         </View>
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Categories</Text>
-          <Text className="text-gray-900 text-xs font-medium">
+          <Text className="text-gray-600">Categories</Text>
+          <Text className="text-gray-900 font-medium">
             {formData.categories?.join(", ")}
           </Text>
         </View>
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Fragile</Text>
-          <Text className="text-gray-900 text-xs font-medium">
+          <Text className="text-gray-600">Fragile</Text>
+          <Text className="text-gray-900 font-medium">
             {formData.fragile ? "Yes" : "No"}
           </Text>
         </View>
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Weight</Text>
-          <Text className="text-gray-900 text-xs font-medium">
+          <Text className="text-gray-600">Weight</Text>
+          <Text className="text-gray-900 font-medium">
             {formData.weight || "0"} KG
           </Text>
         </View>
@@ -1018,8 +1024,8 @@ export default function AddOrderScreen() {
         {(formData.destination === "International" ||
           formData.destination === "Regional") && (
           <View className="flex-row justify-between items-center">
-            <Text className="text-gray-600 text-xs">Dimensions</Text>
-            <Text className="text-gray-900 text-xs font-medium">
+            <Text className="text-gray-600">Dimensions</Text>
+            <Text className="text-gray-900 font-medium">
               {formData.length || "0"} x {formData.width || "0"} x{" "}
               {formData.height || "0"} cm
             </Text>
@@ -1027,30 +1033,52 @@ export default function AddOrderScreen() {
         )}
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Distance</Text>
-          <Text className="text-gray-900 text-xs font-medium">5 Km</Text>
+          <Text className="text-gray-600">Distance</Text>
+          <Text className="text-gray-900 font-medium">5 Km</Text>
         </View>
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Sender</Text>
-          <Text className="text-gray-900 text-xs font-medium">
-            {formData.name}
-          </Text>
+          <Text className="text-gray-600">Sender</Text>
+          <Text className="text-gray-900 font-medium">{formData.name}</Text>
         </View>
 
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-600 text-xs">Receiver</Text>
-          <Text className="text-gray-900 text-xs font-medium">
+          <Text className="text-gray-600">Receiver</Text>
+          <Text className="text-gray-900 font-medium">
             {formData.receiverName}
           </Text>
         </View>
       </View>
 
-      {/* Total Cost */}
+      {/* Pricing Breakdown */}
       <View className="mt-8 pt-4 border-t border-gray-200">
+        {/* Base Price */}
+        <View className="flex-row justify-between items-center mb-2">
+          <Text className="text-gray-600 text-base">Base Delivery Fee</Text>
+          <Text className="text-gray-900 text-base font-medium">
+            ETB 2,000.00
+          </Text>
+        </View>
+
+        {/* VAT */}
+        <View className="flex-row justify-between items-center mb-4">
+          <Text className="text-gray-600 text-base">VAT (15%)</Text>
+          <Text className="text-gray-900 text-base font-medium">
+            ETB 300.00
+          </Text>
+        </View>
+
+        {/* Total */}
         <View className="flex-row justify-between items-center">
-          <Text className="text-gray-900 text-sm font-bold">Total</Text>
-          <Text className="text-[#1141AF] text-sm font-bold">$2500.00</Text>
+          <Text className="text-gray-900 text-lg font-bold">Total</Text>
+          <Text className="text-[#1141AF] text-lg font-bold">ETB 2,300.00</Text>
+        </View>
+
+        {/* VAT Note */}
+        <View className="mt-2">
+          <Text className="text-gray-500 text-xs text-center">
+            *VAT included in total amount
+          </Text>
         </View>
       </View>
     </View>
@@ -1102,9 +1130,11 @@ export default function AddOrderScreen() {
   const renderBookingConfirmationPage = () => (
     <View className="flex-1 items-center justify-center px-6">
       {/* Success Icon - Wavy Blue Circle */}
-      <View className="w-32 h-32 bg-[#1141AF] rounded-full items-center justify-center mb-8">
-        <Ionicons name="checkmark" size={60} color="white" />
-      </View>
+      <Image
+        source={require("../assets/images/subtract.png")}
+        className="w-32 h-32 mb-8"
+        resizeMode="contain"
+      />
 
       {/* Confirmation Content */}
       <View className="items-center mb-8">
@@ -1133,9 +1163,11 @@ export default function AddOrderScreen() {
   const renderBookingConfirmation = () => (
     <View className="flex-1 items-center justify-center px-6">
       {/* Success Icon */}
-      <View className="w-32 h-32 bg-green-500 rounded-full items-center justify-center mb-8">
-        <Ionicons name="checkmark" size={60} color="white" />
-      </View>
+      <Image
+        source={require("../assets/images/success.png")}
+        className="w-36 h-36 mb-8"
+        resizeMode="contain"
+      />
 
       {/* Confirmation Content */}
       <View className="items-center mb-8">

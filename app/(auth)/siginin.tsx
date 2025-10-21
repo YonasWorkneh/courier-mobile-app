@@ -1,7 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import React, { useState } from "react";
+import { useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   ScrollView,
   StatusBar,
   Text,
@@ -9,26 +11,65 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Toast from "react-native-toast-message";
+import { useLogin } from "../../hooks/useAuth";
 
-interface RegisterScreenProps {
-  onBack: () => void;
-  onSignUp: () => void;
-}
-
-export default function RegisterScreen({
-  onBack,
-  onSignUp,
-}: RegisterScreenProps) {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
+export default function SignInScreen() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
+  const router = useRouter();
 
-  const handleSignUp = () => {
-    // Add validation logic here
-    onSignUp();
+  const { login, isLoading, error, isSuccess } = useLogin();
+
+  const validateForm = () => {
+    const newErrors: { email?: string; password?: string } = {};
+
+    if (!email?.trim()) {
+      newErrors.email = "Email is required";
+    }
+
+    if (!password?.trim()) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
+
+  const handleSignIn = () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    login({ email: email.trim(), password });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      Toast.show({
+        type: "success",
+        text1: "Login Successful",
+        text2: "Welcome back!",
+      });
+      // Navigate to main app after successful login
+      router.replace("/(tabs)");
+    }
+  }, [isSuccess, router]);
+
+  useEffect(() => {
+    if (error) {
+      Toast.show({
+        type: "error",
+        text1: "Login Failed",
+        text2: error.message || "Invalid credentials. Please try again.",
+      });
+    }
+  }, [error]);
 
   return (
     <View className="flex-1 bg-[#1141AF] pt-10">
@@ -50,7 +91,7 @@ export default function RegisterScreen({
         {/* Content */}
         <View className="px-6 pt-4 pb-8 relative z-10 h-full justify-between">
           {/* Back Button */}
-          <TouchableOpacity onPress={onBack}>
+          <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
 
@@ -75,17 +116,28 @@ export default function RegisterScreen({
             </Text>
             <View
               className={`bg-white border rounded-xl px-4 py-3 flex-row items-center ${
-                focusedInput === "email"
-                  ? "border-[#1141AF]"
-                  : "border-gray-200"
+                errors.email
+                  ? "border-red-500"
+                  : focusedInput === "email"
+                    ? "border-[#1141AF]"
+                    : "border-gray-200"
               }`}
             >
-              <Ionicons name="mail-outline" size={20} color="#9CA3AF" />
+              <Ionicons
+                name="mail-outline"
+                size={20}
+                color={errors.email ? "#EF4444" : "#9CA3AF"}
+              />
               <TextInput
                 placeholder="Enter Email"
                 placeholderTextColor="#9CA3AF"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(text) => {
+                  setEmail(text);
+                  if (errors.email) {
+                    setErrors((prev) => ({ ...prev, email: undefined }));
+                  }
+                }}
                 onFocus={() => setFocusedInput("email")}
                 onBlur={() => setFocusedInput(null)}
                 keyboardType="email-address"
@@ -93,6 +145,11 @@ export default function RegisterScreen({
                 className="flex-1 ml-3 text-gray-900"
               />
             </View>
+            {errors.email && (
+              <Text className="text-red-500 text-sm mt-1 ml-1">
+                {errors.email}
+              </Text>
+            )}
           </View>
 
           {/* Password Input */}
@@ -102,36 +159,84 @@ export default function RegisterScreen({
             </Text>
             <View
               className={`bg-white border rounded-xl px-4 py-3 flex-row items-center ${
-                focusedInput === "password"
-                  ? "border-[#1141AF]"
-                  : "border-gray-200"
+                errors.password
+                  ? "border-red-500"
+                  : focusedInput === "password"
+                    ? "border-[#1141AF]"
+                    : "border-gray-200"
               }`}
             >
-              <Ionicons name="lock-closed-outline" size={20} color="#9CA3AF" />
+              <Ionicons
+                name="lock-closed-outline"
+                size={20}
+                color={errors.password ? "#EF4444" : "#9CA3AF"}
+              />
               <TextInput
                 placeholder="Enter Password"
                 placeholderTextColor="#9CA3AF"
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  if (errors.password) {
+                    setErrors((prev) => ({ ...prev, password: undefined }));
+                  }
+                }}
                 onFocus={() => setFocusedInput("password")}
                 onBlur={() => setFocusedInput(null)}
-                secureTextEntry
+                secureTextEntry={!showPassword}
                 className="flex-1 ml-3 text-gray-900"
               />
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                className="ml-2"
+              >
+                <Ionicons
+                  name={showPassword ? "eye-outline" : "eye-off-outline"}
+                  size={20}
+                  color="#9CA3AF"
+                />
+              </TouchableOpacity>
             </View>
+            {errors.password && (
+              <Text className="text-red-500 text-sm mt-1 ml-1">
+                {errors.password}
+              </Text>
+            )}
           </View>
 
-          {/* Sign Up Button */}
+          {/* Sign In Button */}
           <TouchableOpacity
-            onPress={handleSignUp}
+            onPress={handleSignIn}
             className="bg-[#1141AF] rounded-xl py-4 mb-6"
-            disabled={!agreeToTerms}
-            style={{ opacity: agreeToTerms ? 1 : 0.5 }}
+            disabled={isLoading}
+            style={{ opacity: isLoading ? 0.7 : 1 }}
           >
-            <Text className="text-white font-bold text-lg text-center">
-              Sign In
-            </Text>
+            {isLoading ? (
+              <View className="flex-row items-center justify-center">
+                <ActivityIndicator size="small" color="white" />
+                <Text className="text-white font-bold text-lg ml-2">
+                  Signing In...
+                </Text>
+              </View>
+            ) : (
+              <Text className="text-white font-bold text-lg text-center">
+                Sign In
+              </Text>
+            )}
           </TouchableOpacity>
+
+          {/* Navigation to Sign Up */}
+          <View className="flex-row justify-center mb-6">
+            <Text className="text-gray-600 text-base">
+              Don&apos;t have an account?{" "}
+              <Text
+                className="text-[#1141AF] font-semibold"
+                onPress={() => router.push("/(auth)/signup")}
+              >
+                Sign Up
+              </Text>
+            </Text>
+          </View>
 
           {/* Social Login Separator */}
           <View className="flex-row items-center mb-6">

@@ -1,6 +1,6 @@
 import { FontAwesome5, FontAwesome6, Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React from "react";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import {
   ScrollView,
   StatusBar,
@@ -9,6 +9,8 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { LogoutModal } from "../../components/logout-modal";
+import { useAuth, useLogout } from "../../hooks/useAuth";
 
 interface MenuItem {
   id: string;
@@ -20,6 +22,37 @@ interface MenuItem {
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+  const { user, isAuthenticated } = useAuth();
+  const {
+    logout,
+    isLoading: isLoggingOut,
+    isSuccess: logoutSuccess,
+  } = useLogout();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  // Function to get user initials
+  const getUserInitials = () => {
+    if (!user?.name) return "U";
+    return user.name
+      .split(" ")
+      .map((name: string) => name.charAt(0).toUpperCase())
+      .slice(0, 2)
+      .join("");
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  // Close modal and redirect to home when logout is successful
+  React.useEffect(() => {
+    if (logoutSuccess) {
+      setShowLogoutModal(false);
+      // Redirect to home tab after successful logout
+      router.push("/(tabs)");
+    }
+  }, [logoutSuccess, router]);
 
   const menuItems: MenuItem[] = [
     {
@@ -85,8 +118,7 @@ export default function ProfileScreen() {
       icon: "log-out-outline",
       iconType: "ionicons",
       onPress: () => {
-        // Handle logout
-        console.log("Logout pressed");
+        setShowLogoutModal(true);
       },
     },
   ];
@@ -94,7 +126,7 @@ export default function ProfileScreen() {
   const renderIcon = (item: MenuItem) => {
     const iconProps = {
       size: 24,
-      color: "#1141AF",
+      color: item.id === "logout" ? "#EF4444" : "#1141AF",
     };
 
     switch (item.iconType) {
@@ -119,7 +151,11 @@ export default function ProfileScreen() {
         <View className="w-8 h-8 items-center justify-center mr-4">
           {renderIcon(item)}
         </View>
-        <Text className="text-gray-900 font-medium text-base flex-1">
+        <Text
+          className={`font-medium text-base flex-1 ${
+            item.id === "logout" ? "text-red-500" : "text-gray-900"
+          }`}
+        >
           {item.title}
         </Text>
       </View>
@@ -155,18 +191,24 @@ export default function ProfileScreen() {
         {/* User Information Section */}
         <View className="items-center mb-8">
           {/* Avatar */}
-          <View className="w-32 h-32 bg-gray-200 rounded-full items-center justify-center mb-4">
-            <Ionicons name="person" size={64} color="#9CA3AF" />
+          <View className="w-32 h-32 bg-[#1141AF] rounded-full items-center justify-center mb-4">
+            {isAuthenticated && user?.name ? (
+              <Text className="text-white font-bold text-4xl">
+                {getUserInitials()}
+              </Text>
+            ) : (
+              <Ionicons name="person" size={64} color="white" />
+            )}
           </View>
 
           {/* Name */}
           <Text className="text-black text-2xl font-bold mb-2">
-            Bereket Ayele
+            {isAuthenticated && user?.name ? user.name : "Guest User"}
           </Text>
 
           {/* Email */}
           <Text className="text-gray-500 text-base mb-6">
-            bereketayele@gmail.com
+            {isAuthenticated && user?.email ? user.email : "Not signed in"}
           </Text>
 
           {/* Edit Profile Button */}
@@ -193,6 +235,15 @@ export default function ProfileScreen() {
           ))}
         </View>
       </ScrollView>
+
+      {/* Logout Modal */}
+      <LogoutModal
+        visible={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleLogout}
+        userName={user?.name}
+        isLoading={isLoggingOut}
+      />
     </View>
   );
 }

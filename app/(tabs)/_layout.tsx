@@ -1,4 +1,5 @@
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome6, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import { Tabs, useRouter } from "expo-router";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
@@ -115,7 +116,13 @@ export default function TabLayout() {
           shadowRadius: 3.84,
         }}
       >
-        <Ionicons name="archive-outline" size={28} color="white" />
+        <Image
+          source={require("../../assets/images/gps.png")}
+          className="w-10 h-10 absolute top-0 left-0 z-10"
+          contentFit="contain"
+          style={{ width: 20, height: 20 }}
+        />
+        <FontAwesome6 name="box-open" size={24} color="white" />
       </TouchableOpacity>
     </View>
   );

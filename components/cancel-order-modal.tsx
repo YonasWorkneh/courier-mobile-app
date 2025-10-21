@@ -68,9 +68,7 @@ export default function CancelOrderModal({
                 className="bg-[#1141AF] rounded-xl py-4 items-center"
                 onPress={handleConfirm}
               >
-                <Text className="text-white font-bold">
-                  {yesButtonText}
-                </Text>
+                <Text className="text-white font-bold">{yesButtonText}</Text>
               </TouchableOpacity>
 
               {/* No Button */}
@@ -78,9 +76,7 @@ export default function CancelOrderModal({
                 className="bg-white border-2 border-[#1141AF] rounded-xl py-4 items-center"
                 onPress={onClose}
               >
-                <Text className="text-[#1141AF] font-bold">
-                  {noButtonText}
-                </Text>
+                <Text className="text-[#1141AF] font-bold">{noButtonText}</Text>
               </TouchableOpacity>
             </View>
           </View>

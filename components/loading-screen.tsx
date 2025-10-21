@@ -15,8 +15,8 @@ export default function LoadingScreen() {
           <View className="items-center justify-center mb-6">
             <Image
               source={require("../assets/images/logo.png")}
-              className="w-32 h-32"
-              style={{ width: 300, height: 150 }}
+              className="w-48 h-48"
+              style={{ width: 500, height: 300 }}
               contentFit="contain"
             />
           </View>
