@@ -14,7 +14,11 @@ export const CheckboxField: React.FC<CheckboxFieldProps> = ({
   onToggle,
 }) => {
   return (
-    <TouchableOpacity onPress={onToggle} className="flex-row items-center mb-4">
+    <TouchableOpacity
+      onPress={onToggle}
+      className="flex-row items-center mb-4"
+      activeOpacity={0.7}
+    >
       <View
         className={`w-6 h-6 border-2 rounded items-center justify-center mr-3 ${
           checked

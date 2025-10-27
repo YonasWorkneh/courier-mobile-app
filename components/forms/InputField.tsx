@@ -64,6 +64,7 @@ export const InputField: React.FC<InputFieldProps> = ({
           <TouchableOpacity
             onPress={rightButton.onPress}
             className="flex-row items-center bg-[#1141AF] px-3 py-2 rounded-lg ml-2"
+            activeOpacity={0.8}
           >
             <Ionicons name={rightButton.icon as any} size={16} color="white" />
             <Text className="text-white text-xs font-medium ml-1">

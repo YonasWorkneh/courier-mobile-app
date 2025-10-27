@@ -13,13 +13,15 @@ interface OrderSummaryProps {
     destination: string;
     categories: string[];
     fragile: boolean;
+    quantity: string;
     weight: string;
-    length: string;
-    width: string;
-    height: string;
+    length?: string;
+    width?: string;
+    height?: string;
     name: string;
     receiverName: string;
   };
+  
 }
 
 export const OrderSummary: React.FC<OrderSummaryProps> = ({ formData }) => {
@@ -103,6 +105,13 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ formData }) => {
           <Text className="text-gray-600">Fragile</Text>
           <Text className="text-gray-900 font-medium">
             {formData.fragile ? "Yes" : "No"}
+          </Text>
+        </View>
+
+        <View className="flex-row justify-between items-center">
+          <Text className="text-gray-600">Quantity</Text>
+          <Text className="text-gray-900 font-medium">
+            {formData.quantity || "0"}
           </Text>
         </View>
 

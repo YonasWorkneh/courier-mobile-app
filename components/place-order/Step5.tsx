@@ -3,6 +3,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import { FormData } from "../../types/place-order";
 import { InputField } from "../forms/InputField";
+import { PhoneInputField } from "../forms/PhoneInputField";
 
 interface Step5Props {
   formData: {
@@ -74,12 +75,10 @@ export const Step5: React.FC<Step5Props> = ({
       />
 
       {/* Receiver Phone Number */}
-      <InputField
+      <PhoneInputField
         label="Phone Number"
         value={formData.receiverPhoneNumber}
-        placeholder="Receiver Phone Number"
-        icon={<Ionicons name="call-outline" size={20} color="#1141AF" />}
-        keyboardType="phone-pad"
+        placeholder="Enter Phone Number"
         error={errors.receiverPhoneNumber}
         focused={focusedInput === "receiverPhoneNumber"}
         onChangeText={(text) => onFieldChange("receiverPhoneNumber", text)}

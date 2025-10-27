@@ -19,9 +19,20 @@ interface Step1Props {
   onToggleDropdown: (field: string) => void;
 }
 
-const serviceTypes = ["Standard", "Same day", "Overnight"];
-const collectionTypes = ["Pickup", "Drop-off"];
-const senderEntries = ["Individual", "Corporate"];
+const serviceTypes = [
+  { label: "Standard", value: "STANDARD" },
+  { label: "Same Day", value: "SAME_DAY" },
+  { label: "Overnight", value: "OVERNIGHT" },
+  { label: "Express", value: "EXPRESS" },
+];
+const collectionTypes = [
+  { label: "Pickup", value: "PICKUP" },
+  { label: "Dropoff", value: "DROPOFF" },
+];
+const senderEntries = [
+  { label: "Individual", value: "INDIVIDUAL" },
+  { label: "Corporate", value: "CORPORATE" },
+];
 
 export const Step1: React.FC<Step1Props> = ({
   formData,
@@ -30,12 +41,22 @@ export const Step1: React.FC<Step1Props> = ({
   onFieldChange,
   onToggleDropdown,
 }) => {
+  const serviceTypeLabel = serviceTypes.find(
+    (type) => type.value === formData.serviceType
+  )?.label;
+  const collectionTypeLabel = collectionTypes.find(
+    (type) => type.value === formData.collectionType
+  )?.label;
+  const senderEntryLabel = senderEntries.find(
+    (type) => type.value === formData.senderEntry
+  )?.label;
+
   return (
     <View className="flex-1">
       <DropdownField
         label="Service Type"
-        value={formData.serviceType}
-        placeholder="Standard, Same day, Overnight"
+        value={serviceTypeLabel || undefined}
+        placeholder="Standard, Same Day, Overnight, Express"
         icon="cube-outline"
         options={serviceTypes}
         error={errors.serviceType}
@@ -46,7 +67,7 @@ export const Step1: React.FC<Step1Props> = ({
 
       <DropdownField
         label="Courier Collection Type"
-        value={formData.collectionType}
+        value={collectionTypeLabel || undefined}
         placeholder="Pickup, Drop-off"
         icon="folder-outline"
         options={collectionTypes}
@@ -57,8 +78,8 @@ export const Step1: React.FC<Step1Props> = ({
       />
 
       <DropdownField
-        label="Sender Entry"
-        value={formData.senderEntry}
+        label="Sender Entity"
+        value={senderEntryLabel || undefined}
         placeholder="Individual, Corporate"
         icon="person-outline"
         options={senderEntries}

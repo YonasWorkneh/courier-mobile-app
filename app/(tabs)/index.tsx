@@ -104,7 +104,11 @@ export default function HomeScreen() {
               </Text>
               <TouchableOpacity
                 className="bg-white rounded-xl py-3 px-2 !w-[100px]"
-                onPress={() => router.push("/place-order")}
+                onPress={() =>
+                  router.push(
+                    isAuthenticated ? "/place-order" : "/login-to-order"
+                  )
+                }
               >
                 <Text className="text-[#1141AF] font-semibold text-center">
                   Order Now

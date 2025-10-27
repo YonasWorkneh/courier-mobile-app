@@ -3,7 +3,6 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { Image } from "expo-image";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { FormData } from "../../types/place-order";
@@ -22,10 +21,14 @@ interface Step2Props {
   showDropdown: string | null;
   onFieldChange: (field: keyof FormData, value: string | boolean) => void;
   onToggleDropdown: (field: string) => void;
-  onToggleCategory: (categoryId: string) => void;
+  onSelectCategory: (categoryId: string) => void;
 }
 
-const destinations = ["Town", "Regional", "International"];
+const destinations = [
+  { label: "Town", value: "TOWN" },
+  { label: "Regional", value: "REGIONAL" },
+  { label: "International", value: "INTERNATIONAL" },
+];
 
 export const Step2: React.FC<Step2Props> = ({
   formData,
@@ -33,65 +36,109 @@ export const Step2: React.FC<Step2Props> = ({
   showDropdown,
   onFieldChange,
   onToggleDropdown,
-  onToggleCategory,
+  onSelectCategory,
 }) => {
   const categoryOptions = [
     {
       id: "Document",
       icon: "document-text-outline",
-      selected: true,
+      selected: formData.categories.includes("Document"),
     },
     {
-      id: "Food Items",
-      specialIcon: (
-        <Image
-          source={require("../../assets/images/food-box.png")}
-          className="w-8 h-8"
-          resizeMode="contain"
-        />
-      ),
-      selected: true,
+      id: "Cakes, Flowers, Delicates",
+      icon: "gift-outline",
+      selected: formData.categories.includes("Cakes, Flowers, Delicates"),
     },
     {
       id: "Grocery",
-      selected: false,
+      selected: formData.categories.includes("Grocery"),
       specialIcon: (
-        <FontAwesome5 name="shopping-cart" size={18} color="#1141AF" />
+        <FontAwesome5
+          name="shopping-cart"
+          size={16}
+          color={formData.categories.includes("Grocery") ? "#fff" : "#1141AF"}
+        />
       ),
     },
     {
       id: "Medication",
-      selected: false,
+      selected: formData.categories.includes("Medication"),
       specialIcon: (
-        <MaterialIcons name="medical-services" size={18} color="#1141AF" />
+        <MaterialIcons
+          name="medical-services"
+          size={16}
+          color={
+            formData.categories.includes("Medication") ? "#fff" : "#1141AF"
+          }
+        />
       ),
     },
-    { id: "Electronics", icon: "phone-portrait-outline", selected: false },
-    { id: "Cakes, Flowers, Delicates", icon: "gift-outline", selected: false },
+    {
+      id: "Clothes",
+      icon: "shirt-outline",
+      selected: formData.categories.includes("Clothes"),
+    },
     {
       id: "Household items",
       specialIcon: (
-        <MaterialCommunityIcons name="toolbox" size={24} color="#1141AF" />
+        <MaterialCommunityIcons
+          name="toolbox"
+          size={24}
+          color={
+            formData.categories.includes("Household items") ? "#fff" : "#1141AF"
+          }
+        />
       ),
-      selected: false,
+      selected: formData.categories.includes("Household items"),
     },
     {
       id: "Fashion items",
       specialIcon: (
         <View className="relative rounded-full items-center justify-center text-[#1141AF]">
-          <MaterialCommunityIcons name="redhat" size={24} color="#1141AF" />
+          <MaterialCommunityIcons
+            name="redhat"
+            size={20}
+            color={
+              formData.categories.includes("Fashion items") ? "#fff" : "#1141AF"
+            }
+          />
           <MaterialCommunityIcons
             name="sunglasses"
-            size={15}
-            color="#1141AF"
+            size={14}
             className="absolute -bottom-2 -right-0"
+            color={
+              formData.categories.includes("Fashion items") ? "#fff" : "#1141AF"
+            }
           />
         </View>
       ),
-      selected: false,
+      selected: formData.categories.includes("Fashion items"),
     },
-    { id: "Clothes", icon: "shirt-outline", selected: false },
-    { id: "E-Commerce", icon: "pricetag-outline", selected: false },
+    {
+      id: "Food Items",
+      specialIcon: (
+        <MaterialIcons
+          name="fastfood"
+          size={24}
+          color={
+            formData.categories.includes("Food Items") ? "#fff" : "#1141AF"
+          }
+        />
+      ),
+      selected: formData.categories.includes("Food Items"),
+    },
+
+    {
+      id: "E-Commerce",
+      icon: "pricetag-outline",
+      selected: formData.categories.includes("E-Commerce"),
+    },
+
+    {
+      id: "Electronics",
+      icon: "phone-portrait-outline",
+      selected: formData.categories.includes("Electronics"),
+    },
   ];
   return (
     <View className="flex-1">
@@ -102,17 +149,18 @@ export const Step2: React.FC<Step2Props> = ({
         </Text>
         <View className="flex-1 flex-row gap-8">
           <TouchableOpacity
-            onPress={() => onFieldChange("shipmentType", "Parcel")}
+            onPress={() => onFieldChange("shipmentType", "PARCEL")}
             className={`flex-row gap-2 border rounded-xl p-4 !py-0 items-center justify-center ${
-              formData.shipmentType === "Parcel"
+              formData.shipmentType === "PARCEL"
                 ? "border-[#1141AF] bg-blue-50"
                 : "border-gray-200 bg-white"
             }`}
+            activeOpacity={0.7}
           >
             <FontAwesome5 name="envelope" size={18} color="#1141AF" />
             <Text
               className={`font-semibold text-sm ${
-                formData.shipmentType === "Parcel"
+                formData.shipmentType === "PARCEL"
                   ? "text-[#1141AF]"
                   : "text-gray-700"
               }`}
@@ -122,17 +170,18 @@ export const Step2: React.FC<Step2Props> = ({
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => onFieldChange("shipmentType", "Courier")}
+            onPress={() => onFieldChange("shipmentType", "COURIER")}
             className={`flex-1 flex-row gap-2 border rounded-xl p-4 py-6 items-center justify-center ${
-              formData.shipmentType === "Courier"
+              formData.shipmentType === "COURIER"
                 ? "border-[#1141AF] bg-blue-50"
                 : "border-gray-200 bg-white"
             }`}
+            activeOpacity={0.7}
           >
             <FontAwesome5 name="box-open" size={18} color="#1141AF" />
             <Text
               className={`font-semibold text-sm ${
-                formData.shipmentType === "Courier"
+                formData.shipmentType === "COURIER"
                   ? "text-[#1141AF]"
                   : "text-gray-700"
               }`}
@@ -146,8 +195,11 @@ export const Step2: React.FC<Step2Props> = ({
       {/* Destination */}
       <DropdownField
         label="Destination"
-        value={formData.destination}
-        placeholder="Town, Region, International"
+        value={
+          formData.destination?.toLowerCase().charAt(0).toUpperCase() +
+          formData.destination?.toLowerCase().slice(1)
+        }
+        placeholder="Town, National, International, Regional"
         icon="location-outline"
         options={destinations}
         error={errors.destination}
@@ -160,7 +212,7 @@ export const Step2: React.FC<Step2Props> = ({
       <CategorySelector
         categories={categoryOptions}
         selectedCategories={formData.categories}
-        onToggle={onToggleCategory}
+        onToggle={onSelectCategory}
       />
     </View>
   );

@@ -28,13 +28,14 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
           <TouchableOpacity
             key={category.id}
             onPress={() => onToggle(category.id)}
-            className={`border border-gray-200 rounded-full px-3 py-2 flex-row items-center ${
-              selectedCategories.includes(category.id)
+            className={`border border-gray-200 rounded-full px-2 py-2 flex-row items-center ${
+              selectedCategories?.includes(category.id)
                 ? "bg-[#1141AF]"
                 : "bg-white !border-[#1141AF]"
             }`}
+            activeOpacity={0.7}
           >
-            <View className="w-8 h-8 rounded-full items-center justify-center mr-3 text-blue-500">
+            <View className="w-8 h-8 rounded-full items-center justify-center mr-1 text-blue-500">
               {category.specialIcon ? (
                 category.specialIcon
               ) : (
@@ -42,7 +43,7 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
                   name={category.icon as any}
                   size={16}
                   color={
-                    selectedCategories.includes(category.id)
+                    selectedCategories?.includes(category.id)
                       ? "#fff"
                       : "#1141AF"
                   }
@@ -51,7 +52,7 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
             </View>
             <Text
               className={`font-medium text-sm ${
-                selectedCategories.includes(category.id)
+                selectedCategories?.includes(category.id)
                   ? "text-[#fff]"
                   : "text-gray-700"
               }`}
@@ -63,14 +64,15 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
         <TouchableOpacity
           onPress={() => onToggle("Other")}
           className={`border border-gray-200 rounded-full px-6 py-2 flex-row items-center ${
-            selectedCategories.includes("Other")
+            selectedCategories?.includes("Other")
               ? "bg-[#1141AF]"
               : "bg-white !border-[#1141AF]"
           }`}
+          activeOpacity={0.7}
         >
           <Text
             className={`font-medium text-sm ${
-              selectedCategories.includes("Other")
+              selectedCategories?.includes("Other")
                 ? "text-[#fff]"
                 : "text-gray-700"
             }`}

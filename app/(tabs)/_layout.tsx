@@ -3,12 +3,15 @@ import { Image } from "expo-image";
 import { Tabs, useRouter } from "expo-router";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
+import { useAuthState } from "../../hooks/useAuthState";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   const router = useRouter();
+  const { isAuthenticated } = useAuthState();
 
   return (
-    <View style={{ flex: 1 }}>
+    <View className="flex-1 bg-white">
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: "#1141AF",
@@ -97,7 +100,9 @@ export default function TabLayout() {
 
       {/* Floating Action Button */}
       <TouchableOpacity
-        onPress={() => router.push("/place-order")}
+        onPress={() =>
+          router.push(isAuthenticated ? "/place-order" : "/login-to-order")
+        }
         style={{
           position: "absolute",
           bottom: 40,

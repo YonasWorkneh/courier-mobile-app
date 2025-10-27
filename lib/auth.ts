@@ -4,7 +4,7 @@ import {
   RegisterData,
   RegisterResponse,
 } from "@/types/auth";
-import { api } from "./api";
+import api  from "./api";
 
 export const registerUser = async (
   userData: RegisterData

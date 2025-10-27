@@ -4,10 +4,10 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 interface DropdownFieldProps {
   label: string;
-  value: string;
+  value: string | undefined;
   placeholder: string;
   icon: string;
-  options: string[];
+  options: { label: string; value: string }[];
   error?: string;
   isOpen: boolean;
   onToggle: () => void;
@@ -37,6 +37,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
               ? "border-[#1141AF]"
               : "border-gray-200"
         }`}
+        activeOpacity={0.7}
       >
         <Ionicons name={icon as any} size={20} color="#1141AF" />
         <Text
@@ -56,13 +57,14 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
         <View className="bg-white border border-gray-200 rounded-xl mt-1">
           {options.map((option, index) => (
             <TouchableOpacity
-              key={option}
-              onPress={() => onSelect(option)}
+              key={option.value}
+              onPress={() => onSelect(option.value)}
               className={`px-4 py-3 ${
                 index !== options.length - 1 ? "border-b border-gray-100" : ""
               }`}
+              activeOpacity={0.7}
             >
-              <Text className="text-gray-900">{option}</Text>
+              <Text className="text-gray-900">{option.label}</Text>
             </TouchableOpacity>
           ))}
         </View>

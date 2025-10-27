@@ -9,11 +9,11 @@ interface Step3Props {
   formData: {
     quantity: string;
     weight: string;
-    length: string;
-    width: string;
-    height: string;
+    length?: string;
+    width?: string;
+    height?: string;
     fragile: boolean;
-    unusualItem: boolean;
+    unusualItem?: boolean;
     destination: string;
   };
   errors: {
@@ -38,8 +38,8 @@ export const Step3: React.FC<Step3Props> = ({
   onBlur,
 }) => {
   const showDimensions =
-    formData.destination === "International" ||
-    formData.destination === "Regional";
+    formData.destination === "INTERNATIONAL" ||
+    formData.destination === "REGIONAL";
 
   return (
     <View className="flex-1">
@@ -77,7 +77,7 @@ export const Step3: React.FC<Step3Props> = ({
           {/* Length */}
           <InputField
             label="Length"
-            value={formData.length}
+            value={formData.length || ""}
             placeholder="Length"
             icon={<FontAwesome5 name="ruler" size={20} color="#1141AF" />}
             keyboardType="numeric"
@@ -91,7 +91,7 @@ export const Step3: React.FC<Step3Props> = ({
           {/* Width */}
           <InputField
             label="Width"
-            value={formData.width}
+            value={formData.width || ""}
             placeholder="Width"
             icon={<AntDesign name="column-width" size={20} color="#1141AF" />}
             keyboardType="numeric"
@@ -105,7 +105,7 @@ export const Step3: React.FC<Step3Props> = ({
           {/* Height */}
           <InputField
             label="Height"
-            value={formData.height}
+            value={formData.height || ""}
             placeholder="Height"
             icon={<AntDesign name="column-height" size={24} color="#1141AF" />}
             keyboardType="numeric"
@@ -127,8 +127,10 @@ export const Step3: React.FC<Step3Props> = ({
         />
         <CheckboxField
           label="Unusual item"
-          checked={formData.unusualItem}
-          onToggle={() => onFieldChange("unusualItem", !formData.unusualItem)}
+          checked={formData.unusualItem || false}
+          onToggle={() =>
+            onFieldChange("unusualItem", !(formData.unusualItem || false))
+          }
         />
       </View>
     </View>

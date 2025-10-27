@@ -131,7 +131,7 @@ export default function RegisterScreen() {
         text2: "Account created successfully!",
       });
       // Navigate to sign in page after successful registration
-      router.replace("/(auth)/siginin");
+      router.replace("/(auth)/signin");
     }
   }, [isSuccess, router]);
 
@@ -476,11 +476,11 @@ export default function RegisterScreen() {
               opacity: agreeToTerms && !isLoading && !isLoadingRoles ? 1 : 0.5,
             }}
           >
-            {isLoading || isLoadingRoles ? (
+            {isLoading ? (
               <View className="flex-row items-center justify-center">
                 <ActivityIndicator size="small" color="white" />
                 <Text className="text-white font-bold text-lg ml-2">
-                  {isLoadingRoles ? "Loading..." : "Creating Account..."}
+                  {"Creating Account..."}
                 </Text>
               </View>
             ) : (
@@ -496,7 +496,7 @@ export default function RegisterScreen() {
               Already have an account?{" "}
               <Text
                 className="text-[#1141AF] font-semibold"
-                onPress={() => router.push("/(auth)/siginin")}
+                onPress={() => router.push("/(auth)/signin")}
               >
                 Sign In
               </Text>
